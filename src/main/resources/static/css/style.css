@@ -1,0 +1,947 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    background:#0f172a;
+    color:white;
+    overflow-x:hidden;
+
+}
+
+/* ====================== LAYOUT ====================== */
+
+.layout{
+
+    display:flex;
+    min-height:100vh;
+
+}
+
+/* ====================== SIDEBAR ====================== */
+
+.sidebar{
+
+    width:250px;
+    background:#131c31;
+    padding:30px 22px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    border-right:1px solid rgba(255,255,255,.05);
+
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+
+}
+
+.logo{
+
+    margin-bottom:45px;
+
+}
+
+.logo h2{
+
+    font-size:26px;
+    font-weight:700;
+    color:white;
+
+}
+
+.logo span{
+
+    color:#3b82f6;
+
+}
+
+.sidebar nav{
+
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+}
+
+.sidebar nav a{
+
+    text-decoration:none;
+    color:#cbd5e1;
+
+    padding:16px 18px;
+
+    border-radius:14px;
+
+    transition:.3s;
+
+    font-size:16px;
+
+}
+
+.sidebar nav a:hover{
+
+    background:#2563eb;
+    color:white;
+    transform:translateX(6px);
+
+}
+
+.sidebar nav .active{
+
+    background:#2563eb;
+    color:white;
+    box-shadow:0 15px 35px rgba(37,99,235,.35);
+
+}
+
+/* ====================== LOGOUT ====================== */
+
+.logout a{
+
+    display:block;
+
+    text-decoration:none;
+
+    text-align:center;
+
+    background:#ef4444;
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.logout a:hover{
+
+    background:#dc2626;
+    transform:translateY(-3px);
+
+}
+
+/* ====================== MAIN ====================== */
+
+.main-content{
+
+    margin-left:250px;
+
+    width:calc(100% - 250px);
+
+    padding:40px;
+
+}
+
+/* ====================== TOP BAR ====================== */
+
+.topbar{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:40px;
+
+}
+
+.topbar h1{
+
+    font-size:48px;
+    font-weight:700;
+
+}
+
+.topbar p{
+
+    margin-top:8px;
+    color:#94a3b8;
+
+}
+
+.profile {
+    background: #1e293b;
+    padding: 16px 24px;
+    border-radius: 14px;
+
+    font-weight: 600;
+    color: #f8fafc;
+
+    border: 1px solid rgba(255,255,255,.06);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    transition: .25s;
+}
+
+.profile:hover {
+    background: #26354d;
+    transform: translateY(-1px);
+}
+
+.profile-arrow {
+    font-size: 20px;
+    margin-left: 4px;
+    transition: .25s;
+}
+
+.profile:hover .profile-arrow {
+    transform: translateX(3px);
+}
+
+/* ================= CARDS ================= */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:25px;
+    margin-bottom:35px;
+}
+
+.card{
+
+    background:#1e293b;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    transition:.35s;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,255,255,.06);
+
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 25px 60px rgba(0,0,0,.35);
+
+}
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:5px;
+
+}
+
+.income-card::before{
+
+    background:#22c55e;
+
+}
+
+.expense-card::before{
+
+    background:#ef4444;
+
+}
+
+.balance-card::before{
+
+    background:#3b82f6;
+
+}
+
+.card h3{
+
+    color:#94a3b8;
+
+    font-size:16px;
+
+    font-weight:500;
+
+    margin-bottom:18px;
+
+}
+
+.card h2{
+
+    font-size:36px;
+
+    font-weight:700;
+
+}
+
+/* ================= BUTTONS ================= */
+
+.actions{
+
+    display:flex;
+
+    gap:18px;
+
+    margin-bottom:35px;
+
+}
+
+.btn{
+
+    text-decoration:none;
+
+    color:white;
+
+    padding:15px 28px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.income-btn{
+
+    background:#16a34a;
+
+}
+
+.expense-btn{
+
+    background:#dc2626;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 20px 40px rgba(0,0,0,.3);
+
+}
+
+/* ================= GRID ================= */
+
+.chart-section{
+
+    margin-bottom:30px;
+
+}
+
+.chart-card{
+
+    background:#1e293b;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    border:1px solid rgba(255,255,255,.05);
+
+}
+
+.chart-card h2{
+
+    margin-bottom:25px;
+
+}
+
+.chart-placeholder{
+
+    height:250px;
+
+    border-radius:18px;
+
+    background:#111827;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:26px;
+
+    color:#64748b;
+
+}
+
+/* ================= TABLE ================= */
+
+.table-card{
+
+    background:#1e293b;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    border:1px solid rgba(255,255,255,.05);
+
+}
+
+.table-card h2{
+
+    margin-bottom:25px;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    background:#2563eb;
+
+}
+
+thead th{
+
+    padding:18px;
+
+    font-size:15px;
+
+}
+
+tbody td{
+
+    padding:18px;
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+}
+
+tbody tr{
+
+    transition:.25s;
+
+}
+
+tbody tr:hover{
+
+    background:#25314f;
+
+}
+
+.income-text{
+
+    color:#22c55e;
+
+    font-weight:600;
+
+}
+
+.expense-text{
+
+    color:#ef4444;
+
+    font-weight:600;
+
+}
+
+.edit-btn{
+
+    background:#f59e0b;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:8px 14px;
+
+    border-radius:8px;
+
+    margin-right:8px;
+
+}
+
+.delete-btn{
+
+    background:#ef4444;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:8px 14px;
+
+    border-radius:8px;
+
+}
+
+.edit-btn:hover,
+.delete-btn:hover{
+
+    opacity:.85;
+
+}
+
+/* ================================================= */
+/*                 PART 3 - PREMIUM UI               */
+/* ================================================= */
+
+/* Animated Background */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    width:700px;
+    height:700px;
+
+    background:radial-gradient(circle,#2563eb55,transparent 70%);
+
+    top:-250px;
+    left:-250px;
+
+    z-index:-2;
+
+    animation:moveOne 18s infinite alternate ease-in-out;
+
+}
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    width:650px;
+    height:650px;
+
+    background:radial-gradient(circle,#7c3aed40,transparent 70%);
+
+    bottom:-250px;
+    right:-250px;
+
+    z-index:-2;
+
+    animation:moveTwo 20s infinite alternate ease-in-out;
+
+}
+
+@keyframes moveOne{
+
+    from{
+
+        transform:translate(0,0);
+
+    }
+
+    to{
+
+        transform:translate(120px,80px);
+
+    }
+
+}
+
+@keyframes moveTwo{
+
+    from{
+
+        transform:translate(0,0);
+
+    }
+
+    to{
+
+        transform:translate(-120px,-80px);
+
+    }
+
+}
+
+/* ================= GLASS EFFECT ================= */
+
+.card,
+.chart-card,
+.table-card{
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(30,41,59,.85);
+
+}
+
+/* ================= CARD ICON STRIP ================= */
+
+.income-card{
+
+    box-shadow:0 20px 45px rgba(34,197,94,.15);
+
+}
+
+.expense-card{
+
+    box-shadow:0 20px 45px rgba(239,68,68,.15);
+
+}
+
+.balance-card{
+
+    box-shadow:0 20px 45px rgba(59,130,246,.15);
+
+}
+
+/* Hover Glow */
+
+.card:hover{
+
+    box-shadow:
+            0 20px 45px rgba(0,0,0,.4),
+            0 0 40px rgba(59,130,246,.15);
+
+}
+
+/* ================= BUTTON EFFECT ================= */
+
+.btn{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.btn::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:-120%;
+
+    top:0;
+
+    width:120%;
+
+    height:100%;
+
+    background:linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,.35),
+            transparent
+    );
+
+    transition:.7s;
+
+}
+
+.btn:hover::before{
+
+    left:120%;
+
+}
+
+/* ================= SIDEBAR GLOW ================= */
+
+.sidebar{
+
+    box-shadow:20px 0 45px rgba(0,0,0,.35);
+
+}
+
+.sidebar nav a{
+
+    position:relative;
+
+}
+
+.sidebar nav a::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:4px;
+
+    height:0;
+
+    background:#3b82f6;
+
+    border-radius:10px;
+
+    transition:.25s;
+
+}
+
+.sidebar nav a:hover::before{
+
+    height:65%;
+
+}
+
+.sidebar nav .active::before{
+
+    height:65%;
+
+}
+
+/* ================= PROFILE ================= */
+
+.profile{
+
+    transition:.3s;
+
+    cursor:pointer;
+
+}
+
+.profile:hover{
+
+    transform:translateY(-5px);
+
+    background:#263449;
+
+}
+
+/* ================= TABLE ================= */
+
+.table-card table{
+
+    overflow:hidden;
+
+    border-radius:14px;
+
+}
+
+tbody tr{
+
+    transition:.25s;
+
+}
+
+tbody tr:hover{
+
+    transform:scale(1.01);
+
+}
+
+/* ================= SCROLLBAR ================= */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#334155;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#3b82f6;
+
+}
+
+/* ================= FADE ANIMATION ================= */
+
+.cards,
+.chart-card,
+.table-card{
+
+    animation:fadeUp .7s ease;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1200px){
+
+    .cards{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+
+        width:90px;
+
+    }
+
+    .sidebar h2,
+    .sidebar nav a,
+    .logout a{
+
+        font-size:0;
+
+    }
+
+    .main-content{
+
+        margin-left:90px;
+
+        width:calc(100% - 90px);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .main-content{
+
+        padding:25px;
+
+    }
+
+    .topbar{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+}
+
+/* ================================================= */
+/*                 CHART STYLING                     */
+/* ================================================= */
+
+#financeChart{
+    width:100% !important;
+    height:340px !important;
+}
+
+.expense-chart-wrapper{
+    width:500px;
+    height:320px;
+    margin:30px auto;
+}
+
+#expenseChart{
+    width:100% !important;
+    height:100% !important;
+}
+
+/* ================= SEARCH ================= */
+
+.search-box{
+
+    width:350px;
+
+    padding:14px 18px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:12px;
+
+    background:#1e293b;
+
+    color:white;
+
+    font-size:15px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.search-box::placeholder{
+
+    color:#94a3b8;
+
+}
+
+.search-box:focus{
+
+    border:1px solid #3b82f6;
+
+    box-shadow:0 0 15px rgba(59,130,246,.25);
+
+}
+
+.green-top{
+    border-top:4px solid #22c55e;
+}
+
+.red-top{
+    border-top:4px solid #ef4444;
+}
+
+.blue-top{
+    border-top:4px solid #3b82f6;
+}
+
+.yellow-top{
+    border-top:4px solid #facc15;
+}
+
+.report-cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+    margin-top:20px;
+    margin-bottom:35px;
+}

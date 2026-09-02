@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FinanceTracker</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0f172a;
+            color: #f8fafc;
+            overflow: hidden;
+        }
+
+        /* ================= BACKGROUND ================= */
+
+        .background {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+        }
+
+        .circle-one {
+            width: 400px;
+            height: 400px;
+            background: #2563eb;
+            top: -150px;
+            left: -100px;
+        }
+
+        .circle-two {
+            width: 350px;
+            height: 350px;
+            background: #22c55e;
+            bottom: -150px;
+            right: -100px;
+        }
+
+        .circle-three {
+            width: 250px;
+            height: 250px;
+            background: #7c3aed;
+            top: 35%;
+            right: 15%;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            position: relative;
+            z-index: 2;
+
+            width: 100%;
+            padding: 28px 55px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo span {
+            color: #3b82f6;
+        }
+
+        .nav-login {
+            text-decoration: none;
+            color: #cbd5e1;
+            font-size: 15px;
+            transition: 0.25s;
+        }
+
+        .nav-login:hover {
+            color: #60a5fa;
+        }
+
+        /* ================= MAIN ================= */
+
+        .hero {
+            position: relative;
+            z-index: 1;
+
+            min-height: calc(100vh - 90px);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px 60px;
+        }
+
+        .hero-content {
+            width: 100%;
+            max-width: 1100px;
+
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 70px;
+
+            align-items: center;
+        }
+
+        /* ================= LEFT ================= */
+
+        .hero-text h1 {
+            font-size: 64px;
+            line-height: 1.05;
+            margin-bottom: 25px;
+            letter-spacing: -2px;
+        }
+
+        .hero-text h1 span {
+            color: #3b82f6;
+        }
+
+        .hero-text p {
+            max-width: 560px;
+
+            color: #94a3b8;
+
+            font-size: 18px;
+            line-height: 1.7;
+
+            margin-bottom: 35px;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+
+            text-decoration: none;
+
+            padding: 15px 30px;
+
+            border-radius: 11px;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            transition: 0.25s;
+        }
+
+        .login-btn {
+            background: #2563eb;
+            color: white;
+
+            box-shadow: 0 10px 25px rgba(37,99,235,0.3);
+        }
+
+        .login-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .register-btn {
+            background: #1e293b;
+            color: #e2e8f0;
+
+            border: 1px solid #334155;
+        }
+
+        .register-btn:hover {
+            background: #263449;
+            transform: translateY(-2px);
+        }
+
+        /* ================= FINANCE PREVIEW ================= */
+
+        .finance-preview {
+            position: relative;
+
+            min-height: 390px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-card {
+            width: 390px;
+
+            background: rgba(30,41,59,0.92);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 22px;
+
+            padding: 28px;
+
+            box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+
+            backdrop-filter: blur(10px);
+        }
+
+        .preview-title {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .preview-balance {
+            font-size: 34px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .preview-balance span {
+            color: #22c55e;
+        }
+
+        /* ================= MINI CARDS ================= */
+
+        .mini-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .mini-card {
+            padding: 18px;
+
+            background: #172236;
+
+            border-radius: 14px;
+
+            border: 1px solid #26354d;
+        }
+
+        .mini-card p {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .mini-card strong {
+            font-size: 20px;
+        }
+
+        .income {
+            color: #22c55e;
+        }
+
+        .expense {
+            color: #ef4444;
+        }
+
+        /* ================= SAVINGS BAR ================= */
+
+        .savings {
+            margin-top: 18px;
+        }
+
+        .savings-header {
+            display: flex;
+            justify-content: space-between;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+
+            margin-bottom: 8px;
+        }
+
+        .progress {
+            height: 8px;
+
+            background: #0f172a;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 72%;
+            height: 100%;
+
+            background: #22c55e;
+
+            border-radius: 20px;
+        }
+
+        /* ================= FLOATING ICONS ================= */
+
+        .floating {
+            position: absolute;
+
+            width: 55px;
+            height: 55px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #1e293b;
+
+            border: 1px solid #334155;
+
+            border-radius: 16px;
+
+            font-size: 25px;
+
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+
+        .icon-one {
+            top: 20px;
+            right: 40px;
+        }
+
+        .icon-two {
+            bottom: 25px;
+            left: 10px;
+        }
+
+        .icon-three {
+            top: 45%;
+            right: -15px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            body {
+                overflow: auto;
+            }
+
+            .navbar {
+                padding: 22px 25px;
+            }
+
+            .hero {
+                padding: 40px 25px;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 45px;
+                text-align: center;
+            }
+
+            .hero-text p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .finance-preview {
+                min-height: 350px;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .logo {
+                font-size: 23px;
+            }
+
+            .hero-text h1 {
+                font-size: 42px;
+            }
+
+            .hero-text p {
+                font-size: 16px;
+            }
+
+            .preview-card {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .floating {
+                display: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- ================= BACKGROUND ================= -->
+
+<div class="background">
+
+    <div class="circle circle-one"></div>
+    <div class="circle circle-two"></div>
+    <div class="circle circle-three"></div>
+
+</div>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Finance<span>Tracker</span>
+    </div>
+
+    <a href="/login" class="nav-login">
+        Already have an account? Login →
+    </a>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+
+        <!-- ================= LEFT CONTENT ================= -->
+
+        <div class="hero-text">
+
+            <h1>
+                Take Control of
+                <span>Your Finances.</span>
+            </h1>
+
+            <p>
+                Track your income, manage expenses, set budgets,
+                and understand your spending — all in one simple
+                personal finance tracker.
+            </p>
+
+
+            <div class="buttons">
+
+                <a href="/login" class="btn login-btn">
+                    Login
+                </a>
+
+                <a href="/register" class="btn register-btn">
+                    Create Account
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= FINANCE PREVIEW ================= -->
+
+        <div class="finance-preview">
+
+
+            <div class="preview-card">
+
+                <div class="preview-title">
+                    Current Balance
+                </div>
+
+                <div class="preview-balance">
+                    ₹<span>9,400</span>
+                </div>
+
+
+                <div class="mini-cards">
+
+                    <div class="mini-card">
+
+                        <p>
+                            💰 Income
+                        </p>
+
+                        <strong class="income">
+                            ₹10,000
+                        </strong>
+
+                    </div>
+
+
+                    <div class="mini-card">
+
+                        <p>
+                            💸 Expenses
+                        </p>
+
+                        <strong class="expense">
+                            ₹600
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="savings">
+
+                    <div class="savings-header">
+
+                        <span>
+                            Monthly Savings
+                        </span>
+
+                        <span>
+                            72%
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+
+                        <div class="progress-bar"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Floating icons -->
+
+            <div class="floating icon-one">
+                💰
+            </div>
+
+            <div class="floating icon-two">
+                📊
+            </div>
+
+            <div class="floating icon-three">
+                💎
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

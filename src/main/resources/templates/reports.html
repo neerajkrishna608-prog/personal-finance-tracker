@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports | FinanceTracker</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+
+        /* ================= REPORT PAGE ================= */
+
+        .report-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .report-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .report-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .report-card h3 {
+            margin-bottom: 12px;
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .report-card h2 {
+            font-size: 30px;
+            color: white;
+        }
+
+        .income-card {
+            border-top: 4px solid #22c55e;
+        }
+
+        .income-card h2 {
+            color: #22c55e;
+        }
+
+        .expense-card {
+            border-top: 4px solid #ef4444;
+        }
+
+        .expense-card h2 {
+            color: #ef4444;
+        }
+
+        .balance-card {
+            border-top: 4px solid #3b82f6;
+        }
+
+        .balance-card h2 {
+            color: #3b82f6;
+        }
+
+        /* ================= CHARTS ================= */
+
+        .chart-section {
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .chart-card h2 {
+            color: #f8fafc;
+            margin-bottom: 25px;
+            font-size: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+        }
+
+        .expense-chart-wrapper {
+            width: 100%;
+            max-width: 500px;
+            height: 350px;
+            margin: auto;
+            position: relative;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .report-cards {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="layout">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>
+                Finance<span>Tracker</span>
+            </h2>
+
+        </div>
+
+
+        <nav>
+
+            <a href="/dashboard">
+                🏠 Dashboard
+            </a>
+
+            <a href="/income">
+                💰 Income
+            </a>
+
+            <a href="/expense">
+                💸 Expense
+            </a>
+
+            <a href="/transactions">
+                📋 Transactions
+            </a>
+
+            <a href="/reports" class="active">
+                📊 Reports
+            </a>
+
+            <a href="/settings">
+                ⚙ Settings
+            </a>
+
+        </nav>
+
+
+        <div class="logout">
+
+            <a href="/logout">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOP HEADER -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Financial Reports 📊
+                </h1>
+
+                <p>
+                    Overview of your financial performance and spending patterns.
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= SUMMARY CARDS ================= -->
+
+        <section class="report-cards">
+
+
+            <!-- TOTAL INCOME -->
+
+            <div class="report-card income-card">
+
+                <h3>
+                    💰 Total Income
+                </h3>
+
+                <h2>
+                    ₹<span th:text="${totalIncome}">0</span>
+                </h2>
+
+            </div>
+
+
+            <!-- TOTAL EXPENSE -->
+
+            <div class="report-card expense-card">
+
+                <h3>
+                    💸 Total Expense
+                </h3>
+
+                <h2>
+                    ₹<span th:text="${totalExpense}">0</span>
+                </h2>
+
+            </div>
+
+
+            <!-- NET SAVINGS -->
+
+            <div class="report-card balance-card">
+
+                <h3>
+                    💎 Net Savings
+                </h3>
+
+                <h2>
+                    ₹<span th:text="${balance}">0</span>
+                </h2>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ================= INCOME VS EXPENSE ================= -->
+
+        <section class="chart-section">
+
+            <div class="chart-card">
+
+                <h2>
+                    📈 Income vs Expense
+                </h2>
+
+                <div class="chart-container">
+
+                    <canvas id="financeChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= EXPENSE DISTRIBUTION ================= -->
+
+        <section class="chart-section">
+
+            <div class="chart-card">
+
+                <h2>
+                    🍩 Overall Expense Distribution
+                </h2>
+
+                <div class="expense-chart-wrapper">
+
+                    <canvas id="expenseChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- ================= THYMELEAF DATA ================= -->
+
+<script th:inline="javascript">
+
+    const months = /*[[${months}]]*/ [];
+
+    const incomeData = /*[[${incomeData}]]*/ [];
+
+    const expenseData = /*[[${expenseData}]]*/ [];
+
+</script>
+
+
+<!-- ================= CHART.JS ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script th:src="@{/js/script.js}"></script>
+
+
+</body>
+
+</html>

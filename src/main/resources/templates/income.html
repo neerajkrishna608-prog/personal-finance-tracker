@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Income | FinanceTracker</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        /* ================= LAYOUT ================= */
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            width: 250px;
+            background: #131c31;
+            padding: 30px 22px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            border-right: 1px solid rgba(255,255,255,.05);
+
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .logo {
+            margin-bottom: 45px;
+        }
+
+        .logo h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .logo span {
+            color: #3b82f6;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar nav a {
+            text-decoration: none;
+            color: #cbd5e1;
+
+            padding: 16px 18px;
+
+            border-radius: 14px;
+
+            transition: .3s;
+
+            font-size: 16px;
+        }
+
+        .sidebar nav a:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateX(6px);
+        }
+
+        .sidebar nav .active {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 15px 35px rgba(37,99,235,.35);
+        }
+
+        /* ================= LOGOUT ================= */
+
+        .logout {
+            margin-top: auto;
+        }
+
+        .logout a {
+            display: block;
+            text-align: center;
+
+            background: #ef4444;
+            color: white;
+
+            text-decoration: none;
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+
+            transition: .25s;
+        }
+
+        .logout a:hover {
+            background: #dc2626;
+        }
+
+        /* ================= MAIN CONTENT ================= */
+
+        .main-content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+
+            padding: 55px 45px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .page-header h1 span {
+            color: #22c55e;
+        }
+
+        .page-header p {
+            color: #94a3b8;
+            font-size: 15px;
+        }
+
+        /* ================= CARD ================= */
+
+        .income-card {
+            background: #1e293b;
+
+            border-radius: 20px;
+
+            padding: 35px;
+
+            border: 1px solid rgba(255,255,255,.06);
+
+            box-shadow: 0 15px 35px rgba(0,0,0,.25);
+
+            width: 100%;
+            max-width: 700px;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #e2e8f0;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 13px 15px;
+
+            background: #0f172a;
+
+            color: #f8fafc;
+
+            border: 1px solid #334155;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font-size: 15px;
+
+            transition: .25s;
+        }
+
+        input::placeholder {
+            color: #64748b;
+        }
+
+        input:focus {
+            border-color: #22c55e;
+
+            box-shadow: 0 0 0 3px rgba(34,197,94,.12);
+        }
+
+        /* ================= SAVE BUTTON ================= */
+
+        .save-button {
+            width: 100%;
+
+            padding: 14px;
+
+            margin-top: 5px;
+
+            background: #16a34a;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: .25s;
+        }
+
+        .save-button:hover {
+            background: #15803d;
+
+            transform: translateY(-1px);
+        }
+
+        /* ================= BACK BUTTON ================= */
+
+        .back-link {
+            display: inline-block;
+
+            margin-top: 25px;
+
+            color: #94a3b8;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: .25s;
+        }
+
+        .back-link:hover {
+            color: #22c55e;
+        }
+
+        /* ================= INCOME HISTORY ================= */
+
+        .history-card {
+            background: #1e293b;
+
+            border-radius: 20px;
+
+            padding: 28px;
+
+            border: 1px solid rgba(255,255,255,.06);
+
+            box-shadow: 0 15px 35px rgba(0,0,0,.25);
+
+            width: 100%;
+
+            max-width: 1000px;
+
+            margin-top: 30px;
+
+            overflow-x: auto;
+        }
+
+        .history-title {
+            font-size: 21px;
+
+            margin-bottom: 22px;
+
+            color: #f8fafc;
+        }
+
+        .history-table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 650px;
+        }
+
+        .history-table thead {
+            background: #172236;
+        }
+
+        .history-table th {
+            text-align: left;
+
+            padding: 15px;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .5px;
+        }
+
+        .history-table td {
+            padding: 16px 15px;
+
+            border-top: 1px solid #293548;
+
+            color: #e2e8f0;
+
+            font-size: 14px;
+        }
+
+        .history-table tbody tr {
+            transition: .2s;
+        }
+
+        .history-table tbody tr:hover {
+            background: #243047;
+        }
+
+        .history-amount {
+            color: #22c55e !important;
+
+            font-weight: bold;
+        }
+
+        .history-action {
+            white-space: nowrap;
+        }
+
+        /* ================= HISTORY BUTTONS ================= */
+
+        .history-edit {
+            display: inline-block;
+
+            padding: 7px 12px;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            color: #60a5fa;
+
+            background: rgba(59,130,246,.15);
+
+            margin-right: 6px;
+
+            transition: .2s;
+        }
+
+        .history-edit:hover {
+            background: #2563eb;
+
+            color: white;
+        }
+
+        .history-delete {
+            display: inline-block;
+
+            padding: 7px 12px;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            color: #f87171;
+
+            background: rgba(239,68,68,.12);
+
+            transition: .2s;
+        }
+
+        .history-delete:hover {
+            background: #ef4444;
+
+            color: white;
+        }
+
+        .history-empty {
+            text-align: center;
+
+            padding: 30px !important;
+
+            color: #64748b !important;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+                padding: 20px;
+            }
+
+            .logo {
+                padding-bottom: 20px;
+            }
+
+            .sidebar nav {
+                flex-direction: row;
+
+                flex-wrap: wrap;
+            }
+
+            .sidebar nav a {
+                padding: 10px 12px;
+            }
+
+            .logout {
+                margin-top: 20px;
+            }
+
+            .main-content {
+                margin-left: 0;
+
+                width: 100%;
+
+                padding: 30px 20px;
+            }
+
+            .page-header h1 {
+                font-size: 27px;
+            }
+
+            .income-card {
+                padding: 25px;
+            }
+
+            .history-card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div>
+
+            <div class="logo">
+
+                <h2>
+                    Finance<span>Tracker</span>
+                </h2>
+
+            </div>
+
+            <nav>
+
+                <a href="/dashboard">
+                    🏠 Dashboard
+                </a>
+
+                <a href="/income" class="active">
+                    💰 Income
+                </a>
+
+                <a href="/expense">
+                    💸 Expense
+                </a>
+
+                <a href="/transactions">
+                    📋 Transactions
+                </a>
+
+                <a href="/reports">
+                    📊 Reports
+                </a>
+
+                <a href="/settings">
+                    ⚙ Settings
+                </a>
+
+            </nav>
+
+        </div>
+
+        <div class="logout">
+
+            <a href="/logout">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+        <!-- Header -->
+
+        <div class="page-header">
+
+            <h1>
+                Add / Edit <span>Income</span> 💰
+            </h1>
+
+            <p>
+                Add a new income source or update an existing one.
+            </p>
+
+        </div>
+
+
+        <!-- ================= INCOME FORM ================= -->
+
+        <div class="income-card">
+
+            <form th:action="@{/income/save}" method="post">
+
+                <!-- Hidden ID for Editing -->
+
+                <input
+                        type="hidden"
+                        name="id"
+                        th:value="${income != null ? income.id : ''}">
+
+
+                <!-- Income Source -->
+
+                <div class="form-group">
+
+                    <label for="source">
+                        Income Source
+                    </label>
+
+                    <input
+                            type="text"
+                            id="source"
+                            name="source"
+                            th:value="${income != null ? income.source : ''}"
+                            placeholder="Salary, Freelancing..."
+                            required>
+
+                </div>
+
+
+                <!-- Amount -->
+
+                <div class="form-group">
+
+                    <label for="amount">
+                        Amount (₹)
+                    </label>
+
+                    <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            step="0.01"
+                            min="0"
+                            th:value="${income != null ? income.amount : ''}"
+                            placeholder="Enter amount"
+                            required>
+
+                </div>
+
+
+                <!-- Date -->
+
+                <div class="form-group">
+
+                    <label for="date">
+                        Date
+                    </label>
+
+                    <input
+                            type="date"
+                            id="date"
+                            name="date"
+                            th:value="${income != null ? #temporals.format(income.date,'yyyy-MM-dd') : ''}"
+                            required>
+
+                </div>
+
+
+                <!-- Save -->
+
+                <button
+                        type="submit"
+                        class="save-button">
+
+                    💰 Save Income
+
+                </button>
+
+            </form>
+
+
+            <!-- Back -->
+
+            <a
+                    href="/dashboard"
+                    class="back-link">
+
+                ← Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+        <!-- ================= INCOME HISTORY ================= -->
+
+        <div class="history-card">
+
+            <h2 class="history-title">
+                📋 Income History
+            </h2>
+
+            <table class="history-table">
+
+                <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>Source</th>
+
+                    <th>Amount</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="incomeItem : ${incomes}">
+
+                    <td>
+                        <span th:text="${incomeItem.date}"></span>
+                    </td>
+
+                    <td>
+                        <span th:text="${incomeItem.source}"></span>
+                    </td>
+
+                    <td class="history-amount">
+                        ₹<span th:text="${incomeItem.amount}"></span>
+                    </td>
+
+                    <td class="history-action">
+
+                        <a
+                                th:href="@{/income/edit/{id}(id=${incomeItem.id})}"
+                                class="history-edit">
+                            Edit
+                        </a>
+
+                        <a
+                                th:href="@{/income/delete/{id}(id=${incomeItem.id})}"
+                                class="history-delete"
+                                onclick="return confirm('Are you sure you want to delete this income?');">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(incomes)}">
+
+                    <td colspan="4" class="history-empty">
+                        No income records yet.
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
